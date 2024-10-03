@@ -438,6 +438,7 @@ namespace HermesProxy.World.Client
                 state.Position = new PartyMemberPartialState.Vector3_UInt16();
                 state.Position.X = packet.ReadInt16();
                 state.Position.Y = packet.ReadInt16();
+                state.Position.Z = packet.ReadInt16();
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Auras))
@@ -471,7 +472,7 @@ namespace HermesProxy.World.Client
                     state.Auras = new List<PartyMemberAuraStates>();
 
                 var auraMask = packet.ReadUInt16(); // Negative Aura Mask
-
+                
                 byte maxAura = 48;
 
                 for (byte i = 0; i < maxAura; ++i)
@@ -792,10 +793,24 @@ namespace HermesProxy.World.Client
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Zone))
                 state.ZoneID = packet.ReadUInt16();
 
-            if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Position))
+            if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PositionX))
             {
                 state.PositionX = packet.ReadInt16();
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PositionY))
+            {
                 state.PositionY = packet.ReadInt16();
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PositionZ))
+            {
+                state.PositionZ = packet.ReadInt16();
+            }
+
+            if (updateFlags.HasFlag(GroupUpdateFlagVanilla.VehicleSeat))
+            {
+                state.VehicleSeat = packet.ReadInt32();
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Auras))
