@@ -794,8 +794,8 @@ namespace HermesProxy.World.Client
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Position))
             {
-                state.PositionX = packet.ReadUInt16();    // uint16으로 바꿈 (기존 int16)
-                state.PositionY = packet.ReadUInt16();    // uint16으로 바꿈 (기존 int16)
+                state.PositionX = packet.ReadInt16();    // uint16으로 바꿈 (기존 int16) 디버그 에러로 Int16으로 다시 바꿈
+                state.PositionY = packet.ReadInt16();    // uint16으로 바꿈 (기존 int16)
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Auras))
