@@ -59,7 +59,7 @@ namespace HermesProxy.World.Enums
     public enum GroupUpdateFlagVanilla : uint
     {
         None             = 0x00000000,
-        Status           = 0x00000001,
+        Status           = 0x00000001,    // 나머지는 다 TBC와 똑같이 적용함
         CurrentHealth    = 0x00000002,
         MaxHealth        = 0x00000004,
         PowerType        = 0x00000008,
@@ -68,7 +68,7 @@ namespace HermesProxy.World.Enums
         Level            = 0x00000040,
         Zone             = 0x00000080,
         Position         = 0x00000100,
-        Auras            = 0x00000200,
+        Auras            = 0x00000200,    // uint32 mask, for each bit set uint16 spellid
         AurasNegative    = 0x00000400,
         PetGuid          = 0x00000800,
         PetName          = 0x00001000,
@@ -78,7 +78,7 @@ namespace HermesProxy.World.Enums
         PetPowerType     = 0x00010000,
         PetCurrentPower  = 0x00020000,
         PetMaxPower      = 0x00040000,
-        PetAuras         = 0x00080000,
+        PetAuras         = 0x00080000,    // uint32 mask, for each bit set uint16 spellid 이거로 일단 테스트 (기존 코드임)
         PetAurasNegative = 0x00100000,
     }
 
