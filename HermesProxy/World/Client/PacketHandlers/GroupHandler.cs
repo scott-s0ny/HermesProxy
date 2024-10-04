@@ -769,33 +769,33 @@ namespace HermesProxy.World.Client
             var updateFlags = (GroupUpdateFlagVanilla)packet.ReadUInt32();
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Status))
-                state.StatusFlags = (GroupMemberOnlineStatus)packet.ReadUInt8();
+                state.StatusFlags = (GroupMemberOnlineStatus)packet.ReadUInt16();    // Enums/GroupDefines의 크기가 uint16인데, uint8로 read하게 되어있어 수정
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.CurrentHealth))
-                state.CurrentHealth = packet.ReadUInt16();
+                state.CurrentHealth = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.MaxHealth))
-                state.MaxHealth = packet.ReadUInt16();
+                state.MaxHealth = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PowerType))
-                state.PowerType = packet.ReadUInt8();
+                state.PowerType = packet.ReadUInt8();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.CurrentPower))
-                state.CurrentPower = packet.ReadUInt16();
+                state.CurrentPower = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.MaxPower))
-                state.MaxPower = packet.ReadUInt16();
+                state.MaxPower = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Level))
-                state.Level = packet.ReadUInt16();
+                state.Level = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Zone))
-                state.ZoneID = packet.ReadUInt16();
+                state.ZoneID = packet.ReadUInt16();    // O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Position))
             {
-                state.PositionX = packet.ReadInt16();
-                state.PositionY = packet.ReadInt16();
+                state.PositionX = packet.ReadUInt16();    // uint16으로 바꿈 (기존 int16)
+                state.PositionY = packet.ReadUInt16();    // uint16으로 바꿈 (기존 int16)
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.Auras))
@@ -803,7 +803,7 @@ namespace HermesProxy.World.Client
                 if (state.Auras == null)
                     state.Auras = new List<PartyMemberAuraStates>();
 
-                var auraMask = packet.ReadUInt32(); // Positive Aura Mask
+                var auraMask = packet.ReadUInt32(); // Positive Aura Mask    이거 맞나 모르겠음
 
                 byte maxAura = 32;
 
@@ -813,7 +813,7 @@ namespace HermesProxy.World.Client
                         continue;
 
                     PartyMemberAuraStates aura = new PartyMemberAuraStates();
-                    aura.SpellId = packet.ReadUInt16();
+                    aura.SpellId = packet.ReadUInt16();    // O
                     if (aura.SpellId != 0)
                     {
                         aura.ActiveFlags = 1;
@@ -828,7 +828,7 @@ namespace HermesProxy.World.Client
                 if (state.Auras == null)
                     state.Auras = new List<PartyMemberAuraStates>();
 
-                var auraMask = packet.ReadUInt16(); // Negative Aura Mask
+                var auraMask = packet.ReadUInt16(); // Negative Aura Mask    이거 맞나 모르겠음
 
                 byte maxAura = 48;
 
@@ -838,7 +838,7 @@ namespace HermesProxy.World.Client
                         continue;
 
                     PartyMemberAuraStates aura = new PartyMemberAuraStates();
-                    aura.SpellId = packet.ReadUInt16();
+                    aura.SpellId = packet.ReadUInt16();    // O
                     if (aura.SpellId != 0)
                     {
                         aura.ActiveFlags = 1;
@@ -852,7 +852,7 @@ namespace HermesProxy.World.Client
             {
                 if (state.Pet == null)
                     state.Pet = new PartyMemberPetStats();
-                state.Pet.NewPetGuid = packet.ReadGuid().To128(GetSession().GameState);
+                state.Pet.NewPetGuid = packet.ReadGuid().To128(GetSession().GameState);    // 모르겠음
             }
 
 
@@ -860,38 +860,38 @@ namespace HermesProxy.World.Client
             {
                 if (state.Pet == null)
                     state.Pet = new PartyMemberPetStats();
-                state.Pet.NewPetName = packet.ReadCString();
+                state.Pet.NewPetName = packet.ReadCString();    // 모르겠음
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetModelId))
             {
                 if (state.Pet == null)
                     state.Pet = new PartyMemberPetStats();
-                state.Pet.DisplayID = packet.ReadUInt16();
+                state.Pet.DisplayID = packet.ReadUInt16();    // uint16 O
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetCurrentHealth))
             {
                 if (state.Pet == null)
                     state.Pet = new PartyMemberPetStats();
-                state.Pet.Health = packet.ReadUInt16();
+                state.Pet.Health = packet.ReadUInt16();    // uint16 O
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetMaxHealth))
             {
                 if (state.Pet == null)
                     state.Pet = new PartyMemberPetStats();
-                state.Pet.MaxHealth = packet.ReadUInt16();
+                state.Pet.MaxHealth = packet.ReadUInt16();    //uint16 O
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetPowerType))
-                packet.ReadUInt8(); // Pet Power Type
+                packet.ReadUInt8(); // Pet Power Type    uint8 O
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetCurrentPower))
-                packet.ReadInt16(); // Pet Current Power
+                packet.ReadUInt16(); // Pet Current Power    uint16 (int16 -> UInt16) 바꿈
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetMaxPower))
-                packet.ReadInt16(); // Pet Max Power
+                packet.ReadUInt16(); // Pet Max Power    uint16 (int16 -> UInt16 바꿈)
 
             if (updateFlags.HasFlag(GroupUpdateFlagVanilla.PetAuras))
             {
@@ -900,7 +900,7 @@ namespace HermesProxy.World.Client
                 if (state.Pet.Auras == null)
                     state.Pet.Auras = new List<PartyMemberAuraStates>();
 
-                var auraMask = packet.ReadUInt32(); // Pet Positive Aura Mask
+                var auraMask = packet.ReadUInt32(); // Pet Positive Aura Mask    32 + 16으로 가자 일단
 
                 byte maxAura = 32;
 
@@ -910,7 +910,7 @@ namespace HermesProxy.World.Client
                         continue;
 
                     PartyMemberAuraStates aura = new PartyMemberAuraStates();
-                    aura.SpellId = packet.ReadUInt16();
+                    aura.SpellId = packet.ReadUInt16();    // O
                     if (aura.SpellId != 0)
                     {
                         aura.ActiveFlags = 1;
@@ -937,7 +937,7 @@ namespace HermesProxy.World.Client
                         continue;
 
                     PartyMemberAuraStates aura = new PartyMemberAuraStates();
-                    aura.SpellId = packet.ReadUInt16();
+                    aura.SpellId = packet.ReadUInt16();    // O
                     if (aura.SpellId != 0)
                     {
                         aura.ActiveFlags = 1;
